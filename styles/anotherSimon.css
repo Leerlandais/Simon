@@ -1,0 +1,38 @@
+body {
+    background-color: #f4d292;
+    font-family: cursive;
+}
+
+h1 {
+    text-align: center;
+    text-decoration: underline;
+}
+
+main {
+    max-width: fit-content;
+    margin: 6vw auto;
+}
+
+.innerDivs {
+    width: 10vw;
+    height: 10vw;
+    border: 2px solid black;
+    text-align: center;
+    line-height: 10vw;
+}
+
+#divRed, #divBlu {
+    margin: 0 auto;
+}
+
+.midDivs { 
+    margin: 3px auto;
+    display: inline-block;
+}
+
+input {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    
+}
