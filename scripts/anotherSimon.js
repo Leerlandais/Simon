@@ -10,10 +10,12 @@ butStart.textContent ="Press to Start";
 var simonPicks = 3;
 var simonPings = [];
 var playerPings = [];
+var currentScore = 0;
 
 butStart.onclick = startSimon;
 
 function startSimon () {
+    simHint.textContent = "Game on";
     playerPings = [];
     console.log("this", playerPings),
 
@@ -31,7 +33,7 @@ function startSimon () {
 }
 
 async function pingPicker () {
-    simHint.textContent = simonPings;
+  //  simHint.textContent = simonPings;
     console.log(simonPings);
     for (let i = 0; i < simonPings.length; i++) {
         if (simonPings[i] === 1) {
@@ -88,48 +90,71 @@ function playerTurn () {
     playerPings = [];
     butStart.textContent = "Your turn";
     butStart.disabled = false;
-        butRed.addEventListener("mousedown", function() {
+        butRed.addEventListener("mousedown", addRed);
+        function addRed () {
         butRed.style.backgroundColor = "red";
         playerPings.push(1);
         console.log(playerPings);
-            simHint.textContent = playerPings;
+  //          simHint.textContent = playerPings;
             butStart.textContent = "Click Me When Done";
-            butRed.addEventListener("mouseup", function() {
+            butRed.addEventListener("mouseup", remRed);
+}
+        function remRed () {
                 butRed.style.backgroundColor = "";
-            });
-        });
-        butYel.addEventListener("mousedown", function() {
+            }
+            butYel.addEventListener("mousedown", addYel);
+            function addYel () {
             butYel.style.backgroundColor = "yellow";
             playerPings.push(2);
             console.log(playerPings);
-            simHint.textContent = playerPings;
+     //       simHint.textContent = playerPings;
             butStart.textContent = "Click Me When Done";
-            butYel.addEventListener("mouseup", function() {
-                butYel.style.backgroundColor = "";
-            });
-        });
-        butGre.addEventListener("mousedown", function() {
+            butYel.addEventListener("mouseup", remYel);
+            }
+        function remYel () {
+            butYel.style.backgroundColor = "";
+        }
+    
+            butGre.addEventListener("mousedown", addGre);
+            function addGre () {
             butGre.style.backgroundColor = "green";
             playerPings.push(3);
             console.log(playerPings);
-            simHint.textContent = playerPings;
+     //       simHint.textContent = playerPings;
             butStart.textContent = "Click Me When Done";
-            butGre.addEventListener("mouseup", function() {
-                butGre.style.backgroundColor = "";
-            });
-        });
-        butBlu.addEventListener("mousedown", function() {
+            butGre.addEventListener("mouseup", remGre);
+    }
+        function remGre () {
+            butGre.style.backgroundColor = "";
+        }
+
+            butBlu.addEventListener("mousedown", addBlu);
+            function addBlu () {
             butBlu.style.backgroundColor = "blue";
             playerPings.push(4);
             console.log(playerPings);
-            simHint.textContent = playerPings;
+     //       simHint.textContent = playerPings;
             butStart.textContent = "Click Me When Done";
-            butBlu.addEventListener("mouseup", function() {
-                butBlu.style.backgroundColor = "";
-            });
-        });
-        butStart.onclick = comparePings;
+            butBlu.addEventListener("mouseup", remBlu);
+            }
+            function remBlu () {
+            butBlu.style.backgroundColor = "";
+            }
+
+            butStart.onclick = clearListeners;
+            function clearListeners () {
+                butRed.removeEventListener("mousedown", addRed);
+                butYel.removeEventListener("mousedown", addYel);
+                butGre.removeEventListener("mousedown", addGre);
+                butBlu.removeEventListener("mousedown", addBlu);
+                butRed.removeEventListener("mouseup", remRed);
+                butYel.removeEventListener("mouseup", remYel);
+                butGre.removeEventListener("mouseup", remGre);
+                butBlu.removeEventListener("mouseup", remBlu);
+                comparePings();
+            }
 }
+
 
 function comparePings () {
     butStart.textContent = "Let's check";
@@ -138,28 +163,32 @@ function comparePings () {
     butYel.style.backgroundColor = "";
     butGre.style.backgroundColor = "";
     butBlu.style.backgroundColor = "";
-    butRed.removeEventListener("click", function(){});
-    butYel.removeEventListener("click", function(){});
-    butGre.removeEventListener("click", function(){});
-    butBlu.removeEventListener("click", function(){});
-    if (simonPings.length === playerPings.length) {
-        for (let i = 0; i < simonPings.length; i++) {
-            if (simonPings[i] === playerPings[i]) {
-                butStart.textContent = "You Win";
-                simonPicks++;
-                playerPings = [];
-                simonPings =  [];
-                console.log (simonPings, playerPings);
-                butStart.style.opacity = "1";
-                butStart.onclick = startSimon;
-            }else if (simonPings[i] !== playerPings[i]){
-                butStart.textContent = "You Lose";
-                butStart.style.opacity = "1";
-                butStart.onclick = startSimon;
-            }else {
-                butStart.textContent = "Oops compPings";
-            }
-        }
 
+
+    let correctSeq = true;
+        for (let i = 0; i < simonPings.length; i++) {
+                if (simonPings[i] !== playerPings[i]){
+                    correctSeq = false;
+                    break;
+                }
+        }
+    if (correctSeq === true && simonPings.length === playerPings.length) {
+        butStart.textContent = "Correct, click for next level";
+        currentScore++;
+        showScore.value = currentScore;
+        simonPicks++;
+        playerPings = [];
+        simonPings =  [];
+        console.log (simonPings, playerPings);
+        butStart.style.opacity = "1";
+        butStart.onclick = startSimon;
+    }else {
+        butStart.textContent = "You Lose. Click to start again";
+        simonPicks = 3;
+        currentScore = 0;
+        showScore.value = currentScore;
+        butStart.style.opacity = "1";
+        butStart.onclick = startSimon;
+    }
 }
-}
+
